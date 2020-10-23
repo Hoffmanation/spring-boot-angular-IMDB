@@ -1,0 +1,103 @@
+
+      <div class="modal-content">
+
+
+         <div class="modal-header row d-flex justify-content-between mx-1 mx-sm-3 mb-0 pb-0 border-0">
+
+            <div [ngClass]="loginIsActive ? 'tabs active' : 'tabs'" class="tabs" id="login-tab" (click)="showLoginForm()">
+                  <h6 [ngClass]="loginIsActive ? 'font-weight-bold' : 'text-muted'" >Login</h6>
+            </div>
+            
+            <div [ngClass]="regisIsActive ? 'tabs active' : 'tabs'" id="regis-tab" (click)="showRegistrationForm()">
+                  <h6 [ngClass]="regisIsActive ? 'font-weight-bold' : 'text-muted'"   >Registration</h6>
+            </div>
+
+         </div>
+
+
+        <div *ngIf="regisIsActive" class="modal-body">
+                  <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+                        <div class="row">
+                           
+                           <div class="col-sm-8">
+                              <div class="form-group">
+                                 <label>Email</label>
+                                 <input style="width: 150%;" type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': regisSubmitted && regiForm.email.errors }" />
+                                 <div *ngIf="regisSubmitted && regiForm.email.errors" class="invalid-feedback">
+                                    <div *ngIf="regiForm.email.errors.required">Email is required</div>
+                                    <div *ngIf="regiForm.email.errors.email">Email must be a valid email address</div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-sm-8">
+                              <div class="form-group">
+                                 <label>Password</label>
+                                 <input style="width: 150%;" type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': regisSubmitted  && regiForm.password.errors }" />
+                                 <div *ngIf="regisSubmitted && regiForm.password.errors" class="invalid-feedback">
+                                    <div *ngIf="regiForm.password.errors.required">Password is required</div>
+                                    <div *ngIf="regiForm.password.errors.minlength">Password must be at least 6 characters</div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-sm-8">
+                              <div class="form-group">
+                                 <label>Confirm Password</label>
+                                 <input style="width: 150%;"  type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': regisSubmitted && regiForm.confirmPassword.errors }" />
+                                 <div *ngIf="regisSubmitted && regiForm.confirmPassword.errors" class="invalid-feedback">
+                                    <div *ngIf="regiForm.confirmPassword.errors.required">Confirm Password is required</div>
+                                    <div *ngIf="regiForm.confirmPassword.errors.minlength">Password must be at least 6 characters</div>
+                                    <div *ngIf="regiForm.confirmPassword.errors.match">Password doesn't match</div>
+                                 </div>
+                              </div>
+                           </div>
+
+                  </div>
+                  <button type="submit" class="btn btn-primary">Register</button>
+                  </form>
+       
+      
+       </div>
+
+
+        <div *ngIf="loginIsActive" class="modal-body">
+                  <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+                        <div class="row">
+                           
+                           <div class="col-sm-8">
+                              <div class="form-group">
+                                 <label>Email</label>
+                                 <input style="width: 150%;" type="text" formControlName="loginEmail" class="form-control" [ngClass]="{ 'is-invalid': loginSubmitted && logForm.loginEmail.errors }" />
+                                 <div *ngIf="loginSubmitted && logForm.loginEmail.errors" class="invalid-feedback">
+                                    <div *ngIf="logForm.loginEmail.errors.required">Email is required</div>
+                                    <div *ngIf="logForm.loginEmail.errors.email">Email must be a valid email address</div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-sm-8">
+                              <div class="form-group">
+                                 <label>Password</label>
+                                 <input style="width: 150%;" type="password" formControlName="loginPassword" class="form-control" [ngClass]="{ 'is-invalid': loginSubmitted  && logForm.loginPassword.errors }" />
+                                 <div *ngIf="loginSubmitted && logForm.loginPassword.errors" class="invalid-feedback">
+                                    <div *ngIf="logForm.loginPassword.errors.required">Password is required</div>
+                                    <div *ngIf="logForm.loginPassword.errors.minlength">Password must be at least 6 characters</div>
+                                 </div>
+                              </div>
+                           </div>
+                           
+
+                  </div>
+                  <button type="submit" class="btn btn-primary">Login</button>
+                  </form>
+       
+      
+       </div>
+        <div style="display: block;" class="modal-footer">
+            <div  *ngIf="loginErrorResponse" style="float: left; color: red;">{{loginErrorResponse}}</div>
+            <div  *ngIf="registrationErrorResponse" style="float: left; color: red;">{{registrationErrorResponse}}</div>
+            <button type="button" class="btn btn-dark" data-dismiss="modal" (click) = "hide()" style="float: right;">Close</button>
+        
+        </div>
+      </div>

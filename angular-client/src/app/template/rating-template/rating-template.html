@@ -1,0 +1,11 @@
+
+<ngb-rating [(rate)]="rate" [readonly]="true">
+  <ng-template let-fill="fill" let-index="index">
+    <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+  </ng-template>
+</ngb-rating>
+<hr>
+<div style="display: flex;">
+  <p style="margin-right: 5%;"><strong>Rate: </strong>{{rate}}</p>
+  <p><strong>From: </strong>{{raters}}</p>
+</div>

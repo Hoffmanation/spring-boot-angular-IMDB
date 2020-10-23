@@ -1,0 +1,44 @@
+<section class="jumbotron text-center" style="padding: 2rem 0rem;">
+  <div class="container">
+    <ngx-ui-loader></ngx-ui-loader>
+    <div style="margin-top: 3%;">
+      <h1 class="jumbotron-heading" style="margin-top: -3%;margin-bottom: 2%;">{{topic}}</h1>
+      <hr>
+
+      <section class="jumbotron text-center" style="padding: 0rem 0rem;">
+        <div id="mainDiv" class="container">
+
+          <div #youtube style="margin-top: 3%;">
+
+
+            <div #movieinfo class="col-md-4">
+              <div class="mb-4 box-shadow" style="  margin-left: -11%;  display: -webkit-inline-box;">
+                <img width="182" height="268" class="card-img-top" data-src="{{movie.imageURL}}" alt="Card image cap">
+                <div class="card-body" style="width: 250%;">
+                  <h5>{{movie.name}}</h5>
+
+
+                  <ngb-rating id="ratingStarts" (click)="rateMovie(movie)" [(rate)]="movie.movieRate.rate" [readonly]="!isUserLoggedin">
+                    <ng-template let-fill="fill" let-index="index">
+                      <span  class="star" [class.filled]="fill === 100" [class.bad]="index < badStars">&#9733;</span>
+                    </ng-template>
+                  </ngb-rating>
+                  <hr>
+                  <div style="display: flex;">
+                    <p style="margin-right: 5%;"><strong>Rate: </strong>{{movie.movieRate.rate}}</p>
+                    <p><strong>From: </strong>{{movie.movieRate.raters}}</p>
+                  </div>
+
+
+                  <p class="card-text" style="display: flex;"><strong style="margin-right: 2%;">Realesed at: </strong>{{movie.dataOfrelease}}</p>
+                  <p class="card-text" style="display: flex;"><strong style="margin-right: 2%;">Genre:</strong>{{movie.genre}}</p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

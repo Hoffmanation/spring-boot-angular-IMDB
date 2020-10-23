@@ -1,0 +1,34 @@
+      <section class="jumbotron text-center" style="padding: 2rem 0rem;">
+        <div class="container">
+          <div style="margin-top: 3%;">
+              <iframe  style="margin-left: 50%;"  width="500" height="270" [src]="todaysMoviePickSrc"
+                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+            
+              <div style="margin-top: -25.7%;"  class="col-md-4">
+              <div class="card mb-4 box-shadow" style="    display: -webkit-inline-box;">
+                <img width="182" height="268" class="card-img-top" data-src="{{imageUrl}}" alt="Card image cap">
+                <div class="card-body" style="background: white; height: 270px;  width: 100%;">
+                  <h5>{{movieName}}</h5>
+
+
+              <ngb-rating [(rate)]="rateFortopbar" [readonly]="true">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+              <hr>
+              <div style="display: flex;">
+                <p style="margin-right: 5%;"><strong>Rate: </strong>{{rateFortopbar}}</p>
+                <p><strong>From: </strong>{{raters}}</p>
+              </div>
+
+
+                  <p class="card-text"><strong style="float: left;">Realesed at: </strong>{{dataOfrelease}}</p>
+                  <p class="card-text"><strong style="float: left;">Genre:</strong> {{genre}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      </section>

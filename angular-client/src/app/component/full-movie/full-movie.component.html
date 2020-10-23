@@ -1,0 +1,41 @@
+      <section class="jumbotron text-center" style="padding: 0rem 0rem;">
+        <div id="mainDiv" class="container">
+
+          <div #youtube style="margin-top: 3%;">
+              <iframe   style="margin-left: 50%;"  width="500" height="270" [src]="todaysMoviePickSrc"
+                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+            
+              <div #movieinfo style="margin-top: -28.4%; margin-left: -1.9rem;"  class="col-md-4">
+              <div class="mb-4 box-shadow" style="    display: -webkit-inline-box;">
+                <img width="182" height="268" class="card-img-top" data-src="{{movie.imageURL}}" alt="Card image cap">
+                <div class="card-body" style="background: white; height: 270px;  width: 100%;">
+                  <h5>{{movie.name}}</h5>
+
+
+            <ngb-rating [(rate)]="movie.movieRate.rate" [readonly]="true">
+              <ng-template let-fill="fill" let-index="index">
+                <span class="star" [class.filled]="fill === 100" [class.bad]="index < 3">&#9733;</span>
+              </ng-template>
+            </ngb-rating>
+              <hr>
+              <div style="display: flex;">
+                <p style="margin-right: 5%;"><strong>Rate: </strong>{{movie.movieRate.rate}}</p>
+                <p><strong>From: </strong>{{movie.movieRate.raters}}</p>
+              </div>
+
+
+                  <p class="card-text"><strong style="float: left;">Realesed at: </strong>{{movie.dataOfrelease}}</p>
+                  <p class="card-text"><strong style="float: left;">Genre:</strong> {{movie.genre}}</p>
+
+                </div>
+              </div>
+            </div>
+             <hr style="margin-top: -1rem;">
+            <p class="addMovieinfo"> {{movie.description}}</p>
+            <p class="addMovieinfo"><strong >director:</strong> {{movie.director}}</p>
+            <p class="addMovieinfo"><strong >writers:</strong> {{movie.writers}}</p>
+            <p class="addMovieinfo"><strong >stars:</strong> {{movie.stars}}</p>
+          </div>
+      </div>
+      </section>

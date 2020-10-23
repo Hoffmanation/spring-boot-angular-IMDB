@@ -1,0 +1,68 @@
+<nav class="main-menu" id='side-bar'>
+            <ul>
+                <li>
+                    <a (click)="routTo('home')" >
+                        <i class="fa fa-home fa-2x"></i>
+                        <span class="nav-text">
+                            Home
+                        </span>
+                    </a>
+                  
+                </li>
+                <li class="has-subnav">
+                    <a (click)="routTo('explore')">
+                        <i class="fa fa-film fa-2x"></i>
+                        <span class="nav-text">
+                            Explore Categories
+                        </span>
+                    </a>
+                    
+                </li>
+                <li class="has-subnav">
+                    <a (click)="routTo('rates')">
+                       <i class="fa fa-star-half-o fa-2x"></i>
+                        <span class="nav-text">
+                            Rate Movies
+                        </span>
+                    </a>
+                    
+                </li>
+                <li class="has-subnav">
+                    <a (click)="routTo('trailers')">
+                       <i class="fa fa-video-camera fa-2x"></i>
+                        <span class="nav-text">
+                            Watch Trailers
+                        </span>
+                    </a>
+                   
+                </li>
+                <li>
+                    <a (click)="routTo('search')">
+                        <i class="fa fa-search fa-2x"></i>
+                        <span class="nav-text">
+                            Search Movies
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a (click)="routTo('doc')">
+                       <i class="fa fa-info fa-2x"></i>
+                        <span class="nav-text">
+                            Documentation
+                        </span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="logout">
+                <li>
+                   <a (click)="logout()">
+                         <i class="fa fa-power-off fa-2x"></i>
+                        <span class="nav-text">
+                            Logout
+                        </span>
+                    </a>
+                </li>  
+            </ul>
+        </nav>
+  

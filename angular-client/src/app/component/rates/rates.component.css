@@ -1,0 +1,53 @@
+    #ratingStarts .star {
+      font-size: 1.5rem;
+      color: #b0c4de;
+      cursor: pointer;
+    }
+
+    #ratingStarts .star:hover {
+      display: block;
+      background-color: #e9ecef;
+      width: 34px;
+      border-radius: 22px;
+      height: 34px;
+    }
+
+
+    #ratingStarts .filled {
+      color: #1e90ff;
+    }
+
+    #ratingStarts .bad {
+      color: #deb0b0;
+    }
+
+    #ratingStarts .bad:hover {
+      display: block;
+      background-color: #e9ecef;
+      width: 34px;
+      border-radius: 22px;
+      height: 34px;
+    }
+
+    #ratingStarts .filled.bad {
+      color: #ff1e1e;
+    }
+
+    #ratingStarts .filled.bad:hover {
+      display: block;
+      background-color: #e9ecef;
+      width: 34px;
+      border-radius: 22px;
+      height: 34px;
+    }
+
+    #mainDiv {
+      background-color: white;
+      height: 270px;
+      width: 937px;
+    }
+
+    .addMovieinfo {
+      text-align: initial;
+      margin-bottom: 0.5rem;
+    }

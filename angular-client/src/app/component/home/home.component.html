@@ -1,0 +1,49 @@
+
+    <main role="main">
+
+      <h1 class="jumbotron-heading" style="    position: absolute; margin-left: 23%;">Today's Pick</h1>
+  
+          <app-top-bar></app-top-bar>
+        <ngx-ui-loader></ngx-ui-loader>
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <ngb-pagination style="margin-top: -2rem;" class="d-flex justify-content-center" size="lg" 
+          [pageSize]="pageSize" 
+          [collectionSize]="collectionSize" 
+          [(page)]="page" 
+          [boundaryLinks]="true"></ngb-pagination>
+          <div class="row">
+            <div class="col-md-3" *ngFor="let movie of allMovies | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="{{movie.imageURL}}" alt="Card image cap">
+                <div class="card-body">
+                  <h5>{{movie.name}}</h5>
+                  <ngbd-rating-template [movie]="movie"></ngbd-rating-template>
+                  <p class="card-text"><strong>Realesed at: </strong>{{movie.dataOfrelease}}</p>
+                  <p class="card-text"><strong>Genre:</strong> {{movie.genre}}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button [routerLink]="['/explore', movie.id]" type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button [routerLink]="['/rates', movie.id]" type="button" class="btn btn-sm btn-outline-secondary">Rate</button>
+                    </div>
+                    <small class="text-muted">{{movie.duration}}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+          <ngb-pagination class="d-flex justify-content-center" size="lg" 
+          [pageSize]="pageSize" 
+          [collectionSize]="collectionSize" 
+          [(page)]="page" 
+          [boundaryLinks]="true"></ngb-pagination>
+        </div>
+      </div>
+
+    </main>
+
+
+
+

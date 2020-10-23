@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "movie.db.source",
+  "type": "java.lang.String",
+  "description": "Determain the movie data-source"
+}]}

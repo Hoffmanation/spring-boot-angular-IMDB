@@ -1,0 +1,27 @@
+    .star {
+      font-size: 1.5rem;
+      color: #b0c4de;
+    }
+
+    .filled {
+      color: #f5c518;
+    }
+
+    .bad {
+      color: #f5c518;
+    }
+
+    .filled.bad {
+      color: #f5c518;
+    }
+
+    #mainDiv {
+background-color: white;
+    height: 441px;
+    width: 1000px;
+    }
+
+    .addMovieinfo {
+      text-align: initial;
+      margin-bottom: 0.5rem;
+    }
