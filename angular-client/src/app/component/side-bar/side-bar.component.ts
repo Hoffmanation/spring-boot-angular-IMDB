@@ -31,7 +31,7 @@ export class SideBarComponent implements OnInit {
     this.movieService.logout().subscribe(response => {
       if (response.status == 200)
         sessionStorage.removeItem('movieRaterUser');
-        window.location.reload();
+      window.location.href = window.location.origin + '/home';
     },
       error => {
         let modalRef = this.modalService.open(NgbdModalContent, { backdropClass: 'light-blue-backdrop' });

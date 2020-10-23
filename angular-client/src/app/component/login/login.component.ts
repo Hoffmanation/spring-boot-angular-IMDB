@@ -38,10 +38,10 @@ export class LoginComponent {
   public loginDetails: LoginDetails;
   public _isUserLoggedIn: boolean = false;
   public _movieRaterUser: any;
-  public usersUrl: any ;
+  public usersUrl: any;
 
 
-  constructor(private router: Router,private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal, public movieService: MovieService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal, public movieService: MovieService) {
     this.usersUrl = environment.baseUrl + ':' + environment.port
   }
 
@@ -128,7 +128,7 @@ export class LoginComponent {
           let username = body.substr(0, body.indexOf('@'));
           sessionStorage.setItem('movieRaterUser', username);
           this.hide();
-           window.location.reload();
+          window.location.href = window.location.origin + '/home';
         }
       }, error => {
         this.registrationErrorResponse = error.error
@@ -154,7 +154,7 @@ export class LoginComponent {
           let username = body.substr(0, body.indexOf('@'));
           sessionStorage.setItem('movieRaterUser', username);
           this.hide();
-          window.location.reload();
+          window.location.href = window.location.origin + '/home';
         }
       }, error => {
         this.loginErrorResponse = error.error
