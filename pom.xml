@@ -9,8 +9,8 @@
 		<version>2.3.1.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>demo.spring.angular</groupId>
-	<artifactId>demo.spring.angular</artifactId>
+	<groupId>spring.angular.demo</groupId>
+	<artifactId>spring.angular.demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-angular-demo</name>
 	<description>A Spring boot angular movie store demo project</description>
