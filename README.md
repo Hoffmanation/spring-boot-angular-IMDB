@@ -1,6 +1,6 @@
 # spring-angular-demo Application
 This Java Spring-Boot 2 application demonstrate an online database of information related to films similar to IMDB
-Demo can be found in this link https://oren-hoffman.com/spring-angular-demo/
+Demo can be found in this link https://oren-hoffman.com/spring-angular-movie/
 
 
 
