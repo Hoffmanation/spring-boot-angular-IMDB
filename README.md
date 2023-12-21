@@ -52,7 +52,7 @@ Demo can be found in this link https://oren-hoffman.com/spring-angular-demo/
 
 ## Accessing UI
 - Local: http://localhost:8080/
-- Demo: https://oren-hoffman.com/spring-angular-demo/
+- Demo: https://oren-hoffman.com/spring-angular-movie/
 
 ## Images
 ![spring-angular-demo 1](spring-angular-movie1.png)
