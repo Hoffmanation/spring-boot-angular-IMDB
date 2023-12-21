@@ -128,7 +128,7 @@ export class LoginComponent {
           let username = body.substr(0, body.indexOf('@'));
           sessionStorage.setItem('movieRaterUser', username);
           this.hide();
-          window.location.href = window.location.origin + '/home';
+          window.location.href = window.location.origin + '/spring-angular-movie';
         }
       }, error => {
         this.registrationErrorResponse = error.error
@@ -154,7 +154,7 @@ export class LoginComponent {
           let username = body.substr(0, body.indexOf('@'));
           sessionStorage.setItem('movieRaterUser', username);
           this.hide();
-          window.location.href = window.location.origin + '/home';
+          window.location.href = window.location.origin + '/spring-angular-movie';
         }
       }, error => {
         this.loginErrorResponse = error.error

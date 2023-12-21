@@ -1,25 +1,26 @@
 package spring.angular.demo.service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.jboss.logging.Logger ;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import spring.angular.demo.entity.Movie;
 import spring.angular.demo.entity.MovieRate;
 
@@ -31,7 +32,7 @@ import spring.angular.demo.entity.MovieRate;
  */
 @Service
 public class MovieCrawlerService {
-	private static final Logger logger = LoggerFactory.getLogger(MovieCrawlerService.class);
+	private static final Logger logger = Logger.getLogger(MovieCrawlerService.class);
 	private static final String YOUTUBE_EMBEDDED_PREFIX = "https://www.youtube.com/embed/";
 	private static final String[] IMDB_ENDPOINTS = { "https://www.imdb.com/search/title/?groups=top_250&sort=user_rating,desc&view=simple",
 			"https://www.imdb.com/search/title/?groups=top_250&view=simple&sort=user_rating,desc&start=51&ref_=adv_nxt",
@@ -127,14 +128,14 @@ public class MovieCrawlerService {
 									movies.add(newMovie);
 
 								} catch (Exception e) {
-									logger.error("An error has accured while trying to retrive movie info from the web", e.getMessage());
+									logger.error("An error has accured while trying to retrive movie info from the web", e);
 								}
 								// Shutdown the thread
 								exec.shutdown();
 							}
 						});
 					} catch (Exception e4) {
-						logger.error("An error has accured while trying to retrive movie info from the web", e4.getMessage());
+						logger.error("An error has accured while trying to retrive movie info from the web", e4);
 						continue;
 					}
 				}
@@ -147,6 +148,25 @@ public class MovieCrawlerService {
 
 		logger.info("MovieCrawlerService has finished");
 		return movies;
+	}
+
+	public String getMoviesFromRemoteJson() {
+		try {
+			DefaultHttpClient client = new DefaultHttpClient();
+	        HttpGet request = new HttpGet("https://oren-hoffman.com/misc/movies/DB.json");
+	        request.addHeader("User-Agent", "PostmanRuntime/7.35.0"); 
+	        request.addHeader("Accept", "*/*"); 
+	        request.addHeader("Accept-Encoding", "gzip, deflate, br"); 
+	        request.addHeader("Connection", "keep-alive"); 
+	        HttpResponse execute = client.execute(request);
+	        InputStream ips  = execute.getEntity().getContent();
+	        return  new BufferedReader(new InputStreamReader(ips, StandardCharsets.UTF_8))
+	        	        .lines()
+	        	        .collect(Collectors.joining("\n"));
+		} catch (Exception e) {
+			logger.error("An error occurred while trying to fetch movies from remote JSON DB", e);
+		}
+		return null;
 	}
 
 }

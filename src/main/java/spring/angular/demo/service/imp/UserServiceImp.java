@@ -3,8 +3,7 @@ package spring.angular.demo.service.imp;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import spring.angular.demo.service.UserService;
 @Service
 public class UserServiceImp implements UserService {
 
-	private static final Logger logger = LogManager.getLogger(UserServiceImp.class);
+	private static final Logger logger = Logger.getLogger(UserServiceImp.class);
 
 	@Autowired
 	private RoleRepository roleDao;

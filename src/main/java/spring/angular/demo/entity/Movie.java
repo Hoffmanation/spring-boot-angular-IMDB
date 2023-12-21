@@ -14,11 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 /**
  * Data object for the movie DB entity
  * 
@@ -28,7 +23,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@EqualsAndHashCode(exclude = "movieRate")
 public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,8 +1,7 @@
 package spring.angular.demo.service.imp;
 
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -39,7 +38,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	private static final Logger logger = LogManager.getLogger(SecurityServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(SecurityServiceImpl.class);
 
 	/**
 	 * This method is custom implementation of the spring security get admin portal

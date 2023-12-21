@@ -39,7 +39,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   gap: 24,
   logoPosition: "bottom-right",
   logoSize: 110,
-  logoUrl: "assets/images/ticket-alt.svg",
+  logoUrl: "spring-angular-movie/assets/images/ticket-alt.svg",
   overlayColor: "rgba(40, 40, 40, 0.8)",
   pbColor: "#f5c518",
   pbDirection: "ltr",

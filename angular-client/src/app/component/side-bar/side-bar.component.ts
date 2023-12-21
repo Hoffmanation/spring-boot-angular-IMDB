@@ -31,7 +31,7 @@ export class SideBarComponent implements OnInit {
     this.movieService.logout().subscribe(response => {
       if (response.status == 200)
         sessionStorage.removeItem('movieRaterUser');
-      window.location.href = window.location.origin + '/home';
+      window.location.href = window.location.origin + '/spring-angular-movie';
     },
       error => {
         let modalRef = this.modalService.open(NgbdModalContent, { backdropClass: 'light-blue-backdrop' });
