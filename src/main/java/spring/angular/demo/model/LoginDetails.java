@@ -1,22 +1,27 @@
 package spring.angular.demo.model;
 
+/**
+ * A DTO/Modal to hold user credentials when logging in 
+ * 
+ * @author Hoffman
+ *
+ */
 public class LoginDetails {
 
-	private String email ;
-	private String password ;
-	private String passwordConfirm ;
-	
+	private String email;
+	private String password;
+	private String confirmPassword;
+
 	public LoginDetails() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LoginDetails(String email, String password, String passwordConfirm) {
+	public LoginDetails(String email, String password, String confirmPassword) {
 		super();
 		this.email = email;
 		this.password = password;
-		this.passwordConfirm = passwordConfirm;
+		this.confirmPassword = confirmPassword;
 	}
-
 
 	public String getEmail() {
 		return email;
@@ -34,22 +39,17 @@ public class LoginDetails {
 		this.password = password;
 	}
 
-	public String getPasswordConfirm() {
-		return passwordConfirm;
+	public String getConfirmPassword() {
+		return confirmPassword;
 	}
 
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 	@Override
 	public String toString() {
-		return "LoginDetails [email=" + email + ", password=" + password + ", confirmPassword=" + passwordConfirm
-				+ "]";
+		return "LoginDetails [email=" + email + ", password=" + password + ", confirmPassword=" + confirmPassword + "]";
 	}
 
-
-
-	
-	
 }

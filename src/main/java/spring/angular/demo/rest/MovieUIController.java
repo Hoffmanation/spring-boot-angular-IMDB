@@ -1,28 +1,26 @@
 package spring.angular.demo.rest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import spring.angular.demo.entity.Movie;
-import spring.angular.demo.repository.MovieRepository;
+import spring.angular.demo.entity.MovieRate;
+import spring.angular.demo.entity.UserRate;
+import spring.angular.demo.manager.MovieManager;
 
 /**
  * Collection of REST endpoint for the spring-angular-demo application
- * 
+ * After Authentication ("/private/") ,  No Authentication needed ("/public/") 
  * @author Hoffman
  *
  */
@@ -31,56 +29,53 @@ import spring.angular.demo.repository.MovieRepository;
 public class MovieUIController {
 
 	@Autowired
-	private MovieRepository movieService;
+	private MovieManager movieManager;
 
 	@GetMapping("/public/getAllMovies")
-	public ResponseEntity<Iterable<Movie>> getAllMovies() {
-		return new ResponseEntity<Iterable<Movie>>(movieService.findAll(), HttpStatus.OK);
+	public ResponseEntity<ArrayList<Movie>> getAllMovies() {
+		return new ResponseEntity<ArrayList<Movie>>(movieManager.getAllMovies(), HttpStatus.OK);
 	}
 
 	@GetMapping("/public/getAllMovieNames")
-	public ResponseEntity<Iterable<String>> getAllMovieNames() {
-		return new ResponseEntity<Iterable<String>>(movieService.getAllMovieNames(), HttpStatus.OK);
+	public ResponseEntity<ArrayList<String>> getAllMovieNames() {
+		return new ResponseEntity<ArrayList<String>>(movieManager.getAllMovieNames(), HttpStatus.OK);
 	}
 
 	@GetMapping("/public/getMoviesByGenre/{genre}")
-	public ResponseEntity<Iterable<String>> getMoviesbyGenre(@PathVariable("genre") String genre) {
-		return new ResponseEntity<Iterable<String>>(movieService.getMoviesByGenre(genre), HttpStatus.OK);
+	public ResponseEntity<ArrayList<Movie>> getMoviesByGenre(@PathVariable("genre") String genre) {
+		return new ResponseEntity<ArrayList<Movie>>(movieManager.getMoviesByGenre(genre), HttpStatus.OK);
 	}
 
 	@GetMapping("/public/getAllMovieGenres")
-	public ResponseEntity<Iterable<String>> getAllMovieGenres() {
-		Set<String> genres = new HashSet<String>();
-		List<String> rawGenres = (List<String>) movieService.getAllMovieGenres();
-		rawGenres.stream().filter(genre -> StringUtils.isNotEmpty(genre)).forEach(genre -> {
-			Arrays.asList(genre.split(",")).stream().filter(newGender -> !genres.contains(newGender)).forEach(newGender -> genres.add(newGender));
-		});
-		return new ResponseEntity<Iterable<String>>(genres, HttpStatus.OK);
+	public ResponseEntity<HashSet<String>> getAllMovieGenres() {
+		return new ResponseEntity<HashSet<String>>(movieManager.getAllMovieGenres(), HttpStatus.OK);
 	}
 
 	@GetMapping("/public/getMovieByName/{name}")
 	public ResponseEntity<Movie> getMovieByName(@PathVariable("name") String name) {
-		Movie movie = movieService.getMovieByName(name);
-		return new ResponseEntity<Movie>(movie, HttpStatus.OK);
+		return new ResponseEntity<Movie>(movieManager.getMovieByName(name), HttpStatus.OK);
 	}
 
 	@GetMapping("/public/getMovieById/{id}")
 	public ResponseEntity<Movie> getMovieById(@PathVariable("id") int id) {
-		Optional<Movie> movie = movieService.findById(id);
-		return new ResponseEntity<Movie>(movie.get(), HttpStatus.OK);
+		return new ResponseEntity<Movie>(movieManager.getMovieById(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/public/getTodaysMoviePick")
 	public ResponseEntity<Movie> getTodaysMoviePick() {
-		List<Movie> movies = (List<Movie>) movieService.findAll();
-		Random rand = new Random();
-		Movie pickMovie = movies.get(rand.nextInt(movies.size()));
+		Movie pickMovie = movieManager.getRandomMovie(1).get(0);
 		return new ResponseEntity<Movie>(pickMovie, HttpStatus.OK);
 	}
 
 	@GetMapping("/public/getTodaysTrailersPick")
 	public ResponseEntity<ArrayList<Movie>> getTodaysTrailersPick() {
-		return new ResponseEntity<ArrayList<Movie>>((ArrayList<Movie>) movieService.getRandomMovie(), HttpStatus.OK);
+		return new ResponseEntity<ArrayList<Movie>>(movieManager.getRandomMovie(15), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PutMapping("/private/reteMovie")
+	public ResponseEntity<MovieRate> reteMovie(UserRate userRate) {
+		return new ResponseEntity<MovieRate>(movieManager.rateMovie(userRate), HttpStatus.OK);
 	}
 
 }

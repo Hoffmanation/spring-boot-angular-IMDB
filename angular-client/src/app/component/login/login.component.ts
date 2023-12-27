@@ -124,14 +124,15 @@ export class LoginComponent {
       this.loginDetails = new LoginDetails(this.regiForm.email.value, this.regiForm.password.value, this.regiForm.confirmPassword.value);
       this.movieService.registration(this.loginDetails).subscribe(response => {
         if (response.status == 201) {
-          let body = response.body;
-          let username = body.substr(0, body.indexOf('@'));
+          let body = JSON.parse(response.body);
+          let username = body.message.substr(0, body.message.indexOf('@'));
           sessionStorage.setItem('movieRaterUser', username);
           this.hide();
           window.location.href = window.location.origin + '/spring-angular-movie';
         }
       }, error => {
-        this.registrationErrorResponse = error.error
+        let body = JSON.parse(error.error);
+        this.loginErrorResponse = body.additional_info ;
         console.log(error);
       });
     }
@@ -150,14 +151,15 @@ export class LoginComponent {
       this.loginDetails = new LoginDetails(this.logForm.loginEmail.value, this.logForm.loginPassword.value, "");
       this.movieService.login(this.loginDetails).subscribe(response => {
         if (response.status == 200) {
-          let body = response.body;
-          let username = body.substr(0, body.indexOf('@'));
+          let body = JSON.parse(response.body);
+          let username = body.message.substr(0, body.message.indexOf('@'));
           sessionStorage.setItem('movieRaterUser', username);
           this.hide();
           window.location.href = window.location.origin + '/spring-angular-movie';
         }
       }, error => {
-        this.loginErrorResponse = error.error
+        let body = JSON.parse(error.error);
+        this.loginErrorResponse = body.additional_info ;
         console.log(error);
       });
     }

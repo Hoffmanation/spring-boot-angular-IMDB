@@ -2,13 +2,18 @@ package spring.angular.demo.entity;
 
 import javax.persistence.*;
 import java.util.Set;
-
+/**
+ * Data object for the role DB entity
+ * 
+ * @author Hoffman
+ *
+ */
 @Entity
 @Table(name = "role")
 public class Role {
     private Long id;
     private String name;
-    private Set<Users> users;
+    private Set<User> user;
 
     public Role() {
 		// TODO Auto-generated constructor stub
@@ -40,11 +45,11 @@ public class Role {
     }
 
     @ManyToMany(mappedBy = "roles")
-    public Set<Users> getUsers() {
-        return users;
+    public Set<User> getUser() {
+        return user;
     }
 
-    public void setUsers(Set<Users> users) {
-        this.users = users;
+    public void setUser(Set<User> user) {
+        this.user = user;
     }
 }

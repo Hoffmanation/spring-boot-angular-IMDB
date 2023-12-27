@@ -1,21 +1,15 @@
 package spring.angular.demo.app;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.jboss.logging.Logger ;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -31,18 +25,20 @@ import spring.angular.demo.service.MovieCrawlerService;
 //Declaring a Spring-Boot application Allow us to get Auto-Configuration and Auto-Component-Scanning and more for this java-module
 @SpringBootApplication
 //Declaring where the Spring-IOC-Container will be scanning for Spring-Beans
-@ComponentScan({ "spring.angular.demo.app",
-									"spring.angular.demo.rest", 
-									"spring.angular.demo.repository", 
-									"spring.angular.demo.service", 
-									"spring.angular.demo.service.imp",
-									"spring.angular.demo.conf" })
+@ComponentScan({ "spring.angular.demo" })
 //Declaring where the Spring-IOC-Container will be scanning for DB-Entities to be used by JPA/Hibernate ORM System
 @EntityScan({ "spring.angular.demo.entity", "spring.angular.demo.model" })
 //Declaring where the Spring-IOC-Container will be scanning for the DAO-Persistence layer to be used by JPA-Spring Data
 @EnableJpaRepositories({ "spring.angular.demo.repository" })
-public class SpringAngularDemoApplication extends SpringBootServletInitializer {
-	private static final Logger log = Logger.getLogger(SpringAngularDemoApplication.class);
+
+/**
+ * Spring Angular Movie Main class
+ * 
+ * @author Hoffman
+ *
+ */
+public class SpringAngularMovieApplication  {
+	private static final Logger log = Logger.getLogger(SpringAngularMovieApplication.class);
 
 	//This property will determine where to take the {@link Movie} entities from;
 	//If configured as 'file' - persistence unit will take the data from 'src/main/resources/DB.json'
@@ -53,15 +49,11 @@ public class SpringAngularDemoApplication extends SpringBootServletInitializer {
 	private static final String FILE = "file" ;
 	private static final String WEB = "web" ;
 
-	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired
+	private ObjectMapper mapper ;
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(SpringAngularDemoApplication.class);
-	}
-	
 	public static void main(String[] args) {
-		SpringApplication.run(SpringAngularDemoApplication.class, args);
+		SpringApplication.run(SpringAngularMovieApplication.class, args);
 	}
 
 	/**
@@ -89,16 +81,15 @@ public class SpringAngularDemoApplication extends SpringBootServletInitializer {
 				movieList = movieCrawlerService.getMoviesFromTheWeb();
 			}
 			
-			
-			  //Persist Movie Enteties
-		        movieList
-		        .stream()
-		        //Validate that the movie object contains enough info to be displayed to the user
-		        .filter(movie -> !movie.isNotComplate())
-		        .forEach(movie -> {
-				movieRepository.save(new Movie(movie.getName(), movie.getGenre(), movie.getDataOfrelease(), movie.getImageURL(), movie.getVideoURL(), movie.getDuration(), movie.getDescription(),
-				movie.getDirector(), movie.getWriters(), movie.getStars(), new MovieRate(movie.getMovieRate().getRaters(), movie.getMovieRate().getRate())));
-				log.info(String.format("New movie was persist into the Database: %s", movie.getName()));
+			  //Persist Movie Entities
+	        movieList
+	        .stream()
+	        //Validate that the movie object contains enough info to be displayed to the user
+	        .filter(movie -> !movie.isNotComplate())
+	        .forEach(movie -> {
+			movieRepository.save(new Movie(movie.getName(), movie.getGenre(), movie.getDataOfrelease(), movie.getImageURL(), movie.getVideoURL(), movie.getDuration(), movie.getDescription(),
+			movie.getDirector(), movie.getWriters(), movie.getStars(), new MovieRate(movie.getMovieRate().getRaters(), movie.getMovieRate().getRate())));
+			log.info(String.format("New movie was persist into the Database: %s", movie.getName()));
 			});
 
 		} catch (Exception e) {

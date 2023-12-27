@@ -2,7 +2,15 @@ package spring.angular.demo.service;
 
 public interface SecurityService {
 
-	public String findLoggedInUsername();
+	/**
+	 * This method is custom implementation of the spring security get principal from security context
+	 * user
+	 */
+	String getLoggedInUsername();
 
-	public boolean autologin(String username, String password);
+	/**
+	 * This method is custom implementation of the spring security login method
+	 */
+	boolean autologin(String username, String password);
+
 }

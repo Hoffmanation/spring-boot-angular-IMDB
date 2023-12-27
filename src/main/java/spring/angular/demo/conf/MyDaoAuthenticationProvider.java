@@ -1,6 +1,11 @@
 package spring.angular.demo.conf;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,25 +18,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+/**
+ * Provide us with a login Authentication methods
+ * injected as a custom implementation of the {@link AuthenticationProvider} spring security 
+ * 
+ * @author Hoffman
+ *
+ */
 @Component
 public class MyDaoAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-	// ~ Static fields/initializers
-	// =====================================================================================
-
-	/**
-	 * The plaintext password used to perform PasswordEncoder#matches(CharSequence,
-	 * String)} on when the user is not found to avoid SEC-2056.
-	 */
-	private static final String USER_NOT_FOUND_PASSWORD = "userNotFoundPassword";
-
-	// ~ Instance fields
-	// ================================================================================================
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	/**
 	 * The password used to perform
@@ -40,21 +39,58 @@ public class MyDaoAuthenticationProvider extends AbstractUserDetailsAuthenticati
 	 * {@link PasswordEncoder} implementations will short circuit if the password is
 	 * not in a valid format.
 	 */
+	private static final String USER_NOT_FOUND_PASSWORD = "userNotFoundPassword";
 	private volatile String userNotFoundEncodedPassword;
 
+
+	/*
+	 *Spring Dependency Injection 
+	 */
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	//Overriding default spring's UserDetailsService Impl 
+    @Qualifier("myUserDetailsService")
 	private UserDetailsService userDetailsService;
 
-	private UserDetailsPasswordService userDetailsPasswordService;
+	@Autowired
+	private InMemoryUserDetailsManager inMemoryUserDetailsManager;
+
 
 	public MyDaoAuthenticationProvider() {
 		setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
 	}
+	
+	/**
+	 * Creates a successful {@link Authentication} object.
+	 * it store the original credentials the user supplied  in the returned Authentication object.
+	 *
+	 * @param application users as {@link Principal} 
+	 * @param Authentication that was presented to the provider for validation
+	 * @param injected customer impl of UserDetails 
+	 *
+	 * @return the successful authentication token
+	 */
+	@Override
+	protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
+		//Validate if he encoded password should be encoded again for better security
+		boolean upgradeEncoding = (this.inMemoryUserDetailsManager != null && this.passwordEncoder.upgradeEncoding(user.getPassword()));
+		if (upgradeEncoding) {
+			String presentedPassword = authentication.getCredentials().toString();
+			String newPassword = this.passwordEncoder.encode(presentedPassword);
+			//
+			user = this.inMemoryUserDetailsManager.updatePassword(user, newPassword);
+		}
+		return super.createSuccessAuthentication(principal, authentication, user);
+	}
 
-	// ~ Methods
-	// ========================================================================================================
+	private void prepareTimingAttackProtection() {
+		if (this.userNotFoundEncodedPassword == null) {
+			this.userNotFoundEncodedPassword = this.passwordEncoder.encode(USER_NOT_FOUND_PASSWORD);
+		}
+	}
 
-	@SuppressWarnings("deprecation")
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 		if (authentication.getCredentials() == null) {
 			logger.debug("Authentication failed: no credentials provided");
@@ -92,23 +128,6 @@ public class MyDaoAuthenticationProvider extends AbstractUserDetailsAuthenticati
 		}
 	}
 
-	@Override
-	protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
-		boolean upgradeEncoding = this.userDetailsPasswordService != null && this.passwordEncoder.upgradeEncoding(user.getPassword());
-		if (upgradeEncoding) {
-			String presentedPassword = authentication.getCredentials().toString();
-			String newPassword = this.passwordEncoder.encode(presentedPassword);
-			user = this.userDetailsPasswordService.updatePassword(user, newPassword);
-		}
-		return super.createSuccessAuthentication(principal, authentication, user);
-	}
-
-	private void prepareTimingAttackProtection() {
-		if (this.userNotFoundEncodedPassword == null) {
-			this.userNotFoundEncodedPassword = this.passwordEncoder.encode(USER_NOT_FOUND_PASSWORD);
-		}
-	}
-
 	private void mitigateAgainstTimingAttack(UsernamePasswordAuthenticationToken authentication) {
 		if (authentication.getCredentials() != null) {
 			String presentedPassword = authentication.getCredentials().toString();
@@ -142,7 +161,7 @@ public class MyDaoAuthenticationProvider extends AbstractUserDetailsAuthenticati
 		return userDetailsService;
 	}
 
-	public void setUserDetailsPasswordService(UserDetailsPasswordService userDetailsPasswordService) {
-		this.userDetailsPasswordService = userDetailsPasswordService;
+	public void setUserDetailsPasswordService(InMemoryUserDetailsManager inMemoryUserDetailsManager) {
+		this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
 	}
 }

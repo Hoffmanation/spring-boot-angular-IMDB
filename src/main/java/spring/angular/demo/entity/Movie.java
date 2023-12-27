@@ -1,5 +1,7 @@
 package spring.angular.demo.entity;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -42,6 +45,9 @@ public class Movie {
 	@JoinColumn(unique = true)
 	private MovieRate movieRate;
 
+	@OneToMany(mappedBy="movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UserRate> userRates;
+	
 	public Movie(String name, String genre, String dataOfrelease, String imageURL, String videoURL, String duration, String description, String director, String writers, String stars, MovieRate movieRate) {
 		super();
 		this.name = name;
@@ -55,7 +61,7 @@ public class Movie {
 		this.director = director;
 		this.writers = writers;
 		this.stars = stars;
-		this.movieRate.setMovie(this);
+		this.movieRate = movieRate ;
 	}
 
 	public Movie() {
@@ -156,6 +162,14 @@ public class Movie {
 
 	public void setMovieRate(MovieRate movieRate) {
 		this.movieRate = movieRate;
+	}
+
+	public Set<UserRate> getUserRates() {
+		return userRates;
+	}
+
+	public void setUserRates(Set<UserRate> userRates) {
+		this.userRates = userRates;
 	}
 
 	@JsonIgnore
