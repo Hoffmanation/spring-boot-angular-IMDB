@@ -1,41 +1,40 @@
 package spring.angular.demo.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
- * Data object for the MovieRate DB entity
+ * Data object for the UserRate DB entity
  * 
  * @author Hoffman
  *
  */
 @Entity
-public class MovieRate {
+public class UserRate {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int Id;
-	private String raters;
 	private Double rate;
 
-	@JsonIgnore
-	@OneToOne(mappedBy = "movieRate", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
+	@ManyToOne
+	@JoinColumn(name = "movie_id", nullable = false)
 	private Movie movie;
 
-	public MovieRate(String raters, Double rate) {
+	public UserRate(Double rate) {
 		super();
-		this.raters = raters;
 		this.rate = rate;
 	}
 
-	public MovieRate() {
+	public UserRate() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -47,14 +46,6 @@ public class MovieRate {
 		Id = id;
 	}
 
-	public String getRaters() {
-		return raters;
-	}
-
-	public void setRaters(String raters) {
-		this.raters = raters;
-	}
-
 	public Double getRate() {
 		return rate;
 	}
@@ -63,17 +54,20 @@ public class MovieRate {
 		this.rate = rate;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public Movie getMovie() {
 		return movie;
 	}
 
 	public void setMovie(Movie movie) {
 		this.movie = movie;
-	}
-	
-	@Override
-	public String toString() {
-		return "MovieRate [Id=" + Id + ", raters=" + raters + ", rate=" + rate + "]";
 	}
 
 }

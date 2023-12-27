@@ -3,6 +3,7 @@ package spring.angular.demo.service.imp;
 
 import org.jboss.logging.Logger ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,14 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import spring.angular.demo.service.SecurityService;
 
 
 /**
- * A service class provides the spring security layer of the mediation
+ * A service class provides the spring security layer of the
  * application
  * 
  * @author Hoffman
@@ -33,19 +33,17 @@ public class SecurityServiceImpl implements SecurityService {
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
+    @Qualifier("myUserDetailsService")
 	private UserDetailsService userDetailsService;
-
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
 
 	private static final Logger logger = Logger.getLogger(SecurityServiceImpl.class);
 
 	/**
-	 * This method is custom implementation of the spring security get admin portal
+	 * This method is custom implementation of the spring security get principal from security context
 	 * user
 	 */
 	@Override
-	public String findLoggedInUsername() {
+	public String getLoggedInUsername() {
 		Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
 		if (userDetails instanceof UserDetails) {
 			return ((UserDetails) userDetails).getUsername();

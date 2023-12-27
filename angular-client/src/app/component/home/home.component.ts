@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   page: number;
   constructor(public movieService: MovieService, private ngxLoader: NgxUiLoaderService) {
     this.ngxLoader.start();
+    console.log('%c Geo-Resolver Version: 2.3', 'color: #70c7be; font-size: 24px;');
   }
   
   ngOnInit(): void {
